@@ -1,0 +1,99 @@
+{% extends "master.html" %}
+
+{% block title %}Lista de Cursos{% endblock %}
+
+{% block content %}
+<section class="listing-page">
+    <nav class="listing-breadcrumb" aria-label="breadcrumb">
+        <a href="/" class="back-link">Inicio</a>
+        <span>/</span>
+        <span>Cursos</span>
+    </nav>
+
+    <div class="listing-hero">
+        <div>
+            <p class="listing-eyebrow">Modulo ejecucion</p>
+            <h1 class="listing-title">Gestion de Cursos</h1>
+            <p class="listing-subtitle">Controla cronogramas, programas asociados y estado de cada curso.</p>
+        </div>
+        <div class="listing-kpi-grid">
+            <div class="listing-kpi">
+                <span>Total</span>
+                <strong>{{ lista_cursos|length }}</strong>
+            </div>
+            <div class="listing-kpi">
+                <span>Visibles</span>
+                <strong>{{ lista_cursos|length }}</strong>
+            </div>
+        </div>
+        <a href="{% url 'cursos:crear_curso' %}" class="listing-cta">+ Agregar Curso</a>
+    </div>
+
+    <div class="listing-panel">
+        <div class="table-wrap">
+                        <table class="app-table listing-table">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Nombre del Curso</th>
+                                    <th>Programa</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Fin</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if lista_cursos %}
+                                    {% for curso in lista_cursos %}
+                                        <tr>
+                                            <td data-label="Codigo">{{ curso.codigo }}</td>
+                                            <td data-label="Nombre">
+                                                <div class="fw-bold text-primary">{{ curso.nombre }}</div>
+                                            </td>
+                                            <td data-label="Programa">
+                                                {% if curso.programa %}
+                                                    <span class="tag tag-info">{{ curso.programa.nombre }}</span>
+                                                {% else %}
+                                                    <span class="tag tag-muted">Sin programa</span>
+                                                {% endif %}
+                                            </td>
+                                            <td data-label="Inicio">{{ curso.fecha_inicio|date:"d/m/Y" }}</td>
+                                            <td data-label="Fin">{{ curso.fecha_fin|date:"d/m/Y" }}</td>
+                                            <td data-label="Estado">
+                                                {% if curso.estado == 'ACT' or curso.estado == 'EJE' %}
+                                                    <span class="tag tag-success">{{ curso.get_estado_display }}</span>
+                                                {% elif curso.estado == 'FIN' %}
+                                                    <span class="tag tag-info">{{ curso.get_estado_display }}</span>
+                                                {% elif curso.estado == 'CAN' %}
+                                                    <span class="tag tag-danger">{{ curso.get_estado_display }}</span>
+                                                {% else %}
+                                                    <span class="tag tag-warning">{{ curso.get_estado_display }}</span>
+                                                {% endif %}
+                                            </td>
+                                                          <td data-label="Acciones" class="actions-cell">
+                                                                <a href="{% url 'cursos:detalle_cursos' curso.id %}" 
+                                                                    class="action-btn action-view" 
+                                                                    title="Ver detalle">Ver</a>
+                                                                <a href="{% url 'cursos:editar_curso' curso.id %}" 
+                                                                    class="action-btn action-edit" 
+                                                                    title="Editar">Editar</a>
+                                                                <a href="{% url 'cursos:eliminar_curso' curso.id %}" 
+                                                                    class="action-btn action-delete" 
+                                                                    title="Eliminar" onclick="return confirm('¿Eliminar el curso {{ curso.nombre }}?')">Eliminar</a>
+                                                          </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="7" class="empty-row">
+                                            No se encontraron cursos registrados.
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

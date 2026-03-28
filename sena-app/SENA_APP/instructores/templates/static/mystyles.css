@@ -1,0 +1,34 @@
+/* Estilos personalizados para la aplicación de instructores */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+    .bg-sena-green {
+        background-color: #009846 !important;
+    }
+    .text-primary {
+        color: #009846 !important;
+    }
+    .btn-outline-primary {
+        color: #009846;
+        border-color: #009846;
+    }
+    .btn-outline-primary:hover {
+        background-color: #009846;
+        color: white;
+    }
+    .instructor-avatar {
+        /* Estilos definidos inline arriba para seguridad, pero se mantienen aquí para referencia */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .card-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        font-weight: 600;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .list-group-item:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.01);
+        transition: transform 0.2s;
+    }

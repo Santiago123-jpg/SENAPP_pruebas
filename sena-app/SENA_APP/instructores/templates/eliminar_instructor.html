@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+
+{% block title %}Eliminar Instructor{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow border-danger">
+        <div class="card-header bg-danger text-white">
+          <h3 class="mb-0">Eliminar Instructor</h3>
+        </div>
+        <div class="card-body">
+          <p>¿Estás seguro de eliminar a <strong>{{ object.nombre }} {{ object.apellido }}</strong>?</p>
+          <form method="post">
+            {% csrf_token %}
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+              <a href="{% url 'instructores:detalle_instructor' object.id %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

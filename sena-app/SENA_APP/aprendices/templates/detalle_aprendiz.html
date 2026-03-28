@@ -1,0 +1,103 @@
+{% extends 'master.html' %}
+
+{% block title %}Detalles del Aprendiz - SENA APP{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'aprendices:main' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'aprendices:lista_aprendices' %}">Lista de Aprendices</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ aprendiz.nombre_completo }}</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h2 class="card-title mb-0">
+                <i class="bi bi-person-circle"></i> Perfil del Aprendiz
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-3 text-center">
+                    <div class="bg-light p-4 rounded" style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                        <div style="font-size: 3rem; font-weight: bold; color: #0066cc;">
+                            {{ aprendiz.nombre.0 }}{{ aprendiz.apellido.0 }}
+                        </div>
+                    </div>
+                    <h4 class="mt-3">{{ aprendiz.nombre_completo }}</h4>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-muted mb-3">Información Personal</h5>
+                            <div class="mb-3">
+                                <strong>Documento de Identidad:</strong>
+                                <p>{{ aprendiz.documento_identidad }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Nombre:</strong>
+                                <p>{{ aprendiz.nombre }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Apellido:</strong>
+                                <p>{{ aprendiz.apellido }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Fecha de Nacimiento:</strong>
+                                <p>{{ aprendiz.fecha_nacimiento|date:"d/m/Y" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="text-muted mb-3">Información de Contacto</h5>
+                            <div class="mb-3">
+                                <strong>Correo Electrónico:</strong>
+                                <p><a href="mailto:{{ aprendiz.correo_electronico }}">{{ aprendiz.correo_electronico }}</a></p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Teléfono:</strong>
+                                <p>{{ aprendiz.telefono }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Ciudad:</strong>
+                                <p>{{ aprendiz.ciudad }}</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Programa de Formación:</strong>
+                                <p>
+                                    {% if aprendiz.programa %}
+                                        <span class="badge bg-success">{{ aprendiz.programa }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Sin programa asignado</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="d-flex gap-2 justify-content-between mt-4">
+                <div>
+                    <a href="{% url 'aprendices:editar_aprendiz' aprendiz.id %}" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Editar
+                    </a>
+                    <a href="{% url 'aprendices:eliminar_aprendiz' aprendiz.id %}" class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar a {{ aprendiz.nombre_completo }}?')">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </a>
+                </div>
+                <a href="{% url 'aprendices:lista_aprendices' %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{%extends "master.html"%}
+
+{%block title%}Lista de Aprendices{%endblock%}
+
+{%block content%}
+    <section class="listing-page">
+        <nav class="listing-breadcrumb" aria-label="breadcrumb">
+            <a href="/" class="back-link">Inicio</a>
+            <span>/</span>
+            <span>Aprendices</span>
+        </nav>
+
+        <div class="listing-hero">
+            <div>
+                <p class="listing-eyebrow">Modulo academico</p>
+                <h1 class="listing-title">Listado de Aprendices</h1>
+                <p class="listing-subtitle">Consulta, edita y administra los aprendices registrados en la plataforma.</p>
+            </div>
+            <div class="listing-kpi-grid">
+                <div class="listing-kpi">
+                    <span>Registros</span>
+                    <strong>{% if is_paginated %}{{ page_obj.paginator.count }}{% else %}{{ lista_aprendices|length }}{% endif %}</strong>
+                </div>
+                <div class="listing-kpi">
+                    <span>Pagina actual</span>
+                    <strong>{% if is_paginated %}{{ page_obj.number }}{% else %}1{% endif %}</strong>
+                </div>
+            </div>
+            <a href="{% url 'aprendices:crear_aprendiz' %}" class="listing-cta">+ Agregar Aprendiz</a>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="list-notice" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if lista_aprendices %}
+            <div class="listing-panel">
+                <div class="table-wrap">
+                <table class="app-table listing-table">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombre Completo</th>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Programa</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for aprendiz in lista_aprendices %}
+                        <tr>
+                            <td data-label="Documento">{{ aprendiz.documento_identidad }}</td>
+                            <td data-label="Nombre Completo">{{ aprendiz.nombre_completo }}</td>
+                            <td data-label="Correo">{{ aprendiz.correo_electronico }}</td>
+                            <td data-label="Teléfono">{{ aprendiz.telefono }}</td>
+                            <td data-label="Programa">
+                                {% if aprendiz.programa %}
+                                    <span class="tag tag-info">{{ aprendiz.programa }}</span>
+                                {% else %}
+                                    <span class="tag tag-muted">Sin programa</span>
+                                {% endif %}
+                            </td>
+                            <td data-label="Acciones" class="actions-cell">
+                                <a href="{% url 'aprendices:detalle_aprendiz' aprendiz.id %}" 
+                                   class="action-btn action-view"
+                                   title="Ver detalle">
+                                   Ver
+                                </a>
+                                <a href="{% url 'aprendices:editar_aprendiz' aprendiz.id %}" 
+                                   class="action-btn action-edit"
+                                   title="Editar">
+                                   Editar
+                                </a>
+                                <a href="{% url 'aprendices:eliminar_aprendiz' aprendiz.id %}" 
+                                   class="action-btn action-delete"
+                                   title="Eliminar"
+                                   onclick="return confirm('¿Está seguro de eliminar a {{ aprendiz.nombre_completo }}?')">
+                                   Eliminar
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+
+            {% if is_paginated %}
+                <div class="listing-pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1" class="page-link-app">Primera</a>
+                        <a href="?page={{ page_obj.previous_page_number }}" class="page-link-app">Anterior</a>
+                    {% endif %}
+
+                    <span class="page-label">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" class="page-link-app">Siguiente</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link-app">Última</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="listing-empty">
+                <strong>Sin aprendices registrados</strong><br>
+                Aún no hay aprendices en el sistema. 
+                <a href="{% url 'aprendices:crear_aprendiz' %}">Haz clic aquí para agregar uno.</a>
+            </div>
+        {% endif %}
+    </section>
+{%endblock%}

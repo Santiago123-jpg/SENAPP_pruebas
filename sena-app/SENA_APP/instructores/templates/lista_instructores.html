@@ -1,0 +1,82 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Lista de Instructores - SENA APP{% endblock %}
+
+{% block content %}
+<section class="listing-page">
+    <nav class="listing-breadcrumb" aria-label="breadcrumb">
+        <a href="/" class="back-link">Inicio</a>
+        <span>/</span>
+        <span>Instructores</span>
+    </nav>
+
+    <div class="listing-hero">
+        <div>
+            <p class="listing-eyebrow">Modulo talento humano</p>
+            <h1 class="listing-title">Listado de Instructores</h1>
+            <p class="listing-subtitle">Visualiza estado, contacto y experiencia de los instructores vinculados.</p>
+        </div>
+        <div class="listing-kpi-grid">
+            <div class="listing-kpi">
+                <span>Total</span>
+                <strong>{{ total_instructores }}</strong>
+            </div>
+            <div class="listing-kpi">
+                <span>Activos</span>
+                <strong>{{ lista_instructores|length }}</strong>
+            </div>
+        </div>
+        <a href="{% url 'instructores:crear_instructor' %}" class="listing-cta">+ Agregar Instructor</a>
+    </div>
+
+    {% if lista_instructores %}
+    <div class="listing-panel">
+        <div class="table-wrap">
+            <table class="app-table listing-table">
+                <thead>
+                    <tr>
+                        <th>Instructor</th>
+                        <th>Especialidad</th>
+                        <th>Documento</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for instructor in lista_instructores %}
+                    <tr>
+                        <td data-label="Instructor">{{ instructor.nombre_completo }}</td>
+                        <td data-label="Especialidad">{{ instructor.especialidad }}</td>
+                        <td data-label="Documento">{{ instructor.get_tipo_documento_display }} {{ instructor.numero_documento }}</td>
+                        <td data-label="Correo">{{ instructor.correo }}</td>
+                        <td data-label="Telefono">{{ instructor.telefono }}</td>
+                        <td data-label="Estado">
+                            {% if instructor.activo %}
+                            <span class="tag tag-success">Activo</span>
+                            {% else %}
+                            <span class="tag tag-danger">Inactivo</span>
+                            {% endif %}
+                        </td>
+                        <td data-label="Acciones" class="actions-cell">
+                            <a href="{% url 'instructores:detalle_instructor' instructor.id %}" class="action-btn action-view">Ver</a>
+                            <a href="{% url 'instructores:editar_instructor' instructor.id %}" class="action-btn action-edit">Editar</a>
+                            <a href="{% url 'instructores:eliminar_instructor' instructor.id %}" class="action-btn action-delete" onclick="return confirm('¿Eliminar a {{ instructor.nombre_completo }}?')">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="listing-empty">
+        <strong>Sin instructores registrados</strong><br>
+        No se encontraron instructores en el sistema.
+    </div>
+    {% endif %}
+
+</section>
+{% endblock %}

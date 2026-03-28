@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}Editar Instructor{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow">
+        <div class="card-header bg-warning text-white">
+          <h3 class="mb-0"><i class="bi bi-pencil-square"></i> Editar Instructor</h3>
+        </div>
+        <div class="card-body">
+          <p>Editando: <strong>{{ object.nombre }} {{ object.apellido }}</strong></p>
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="mt-3">
+              <button type="submit" class="btn btn-success">Guardar Cambios</button>
+              <a href="{% url 'instructores:detalle_instructor' object.id %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

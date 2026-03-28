@@ -1,0 +1,92 @@
+{% extends "master.html" %}
+
+{% block title %}Lista de Programas de Formación{% endblock %}
+
+{% block content %}
+<section class="listing-page">
+    <nav class="listing-breadcrumb" aria-label="breadcrumb">
+        <a href="/" class="back-link">Inicio</a>
+        <span>/</span>
+        <span>Programas</span>
+    </nav>
+
+    <div class="listing-hero">
+        <div>
+            <p class="listing-eyebrow">Modulo formacion</p>
+            <h1 class="listing-title">Catalogo de Programas</h1>
+            <p class="listing-subtitle">Gestiona niveles, regionales y estados de los programas de formacion.</p>
+        </div>
+        <div class="listing-kpi-grid">
+            <div class="listing-kpi">
+                <span>Total</span>
+                <strong>{{ lista_programas|length }}</strong>
+            </div>
+            <div class="listing-kpi">
+                <span>Activos</span>
+                <strong>{{ lista_programas|length }}</strong>
+            </div>
+        </div>
+        <a href="{% url 'programas:crear_programa' %}" class="listing-cta">+ Agregar Programa</a>
+    </div>
+
+    <div class="listing-panel">
+        <div class="table-wrap">
+                        <table class="app-table listing-table">
+                            <thead>
+                                <tr>
+                                    <th>Codigo</th>
+                                    <th>Nombre del Programa</th>
+                                    <th>Nivel</th>
+                                    <th>Regional</th>
+                                    <th>Duracion (Horas)</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if lista_programas %}
+                                    {% for programa in lista_programas %}
+                                        <tr>
+                                            <td data-label="Codigo">{{ programa.codigo }}</td>
+                                            <td data-label="Nombre">
+                                                <div class="fw-bold text-primary">{{ programa.nombre }}</div>
+                                            </td>
+                                            <td data-label="Nivel">
+                                                <span class="text-muted small">{{ programa.get_nivel_formacion_display }}</span>
+                                            </td>
+                                            <td data-label="Regional">{{ programa.regional }}</td>
+                                            <td data-label="Duracion">{{ programa.duracion_horas }}</td>
+                                            <td data-label="Estado">
+                                                {% if programa.estado == 'ACT' %}
+                                                    <span class="tag tag-success">{{ programa.get_estado_display }}</span>
+                                                {% elif programa.estado == 'INA' or programa.estado == 'CAN' %}
+                                                    <span class="tag tag-danger">{{ programa.get_estado_display }}</span>
+                                                {% else %}
+                                                    <span class="tag tag-warning">{{ programa.get_estado_display }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td data-label="Acciones" class="actions-cell">
+                                                                     <a href="{% url 'programas:detalle_programas' programa.id %}" 
+                                                                         class="action-btn action-view" 
+                                                                         title="Ver Detalle">Ver</a>
+                                                                     <a href="{% url 'programas:editar_programa' programa.id %}" 
+                                                                         class="action-btn action-edit">Editar</a>
+                                                                     <a href="{% url 'programas:eliminar_programa' programa.id %}" 
+                                                                         class="action-btn action-delete" 
+                                                                         onclick="return confirm('¿Eliminar el programa {{ programa.nombre }}?')">Eliminar</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="7" class="empty-row">
+                                            No se encontraron programas de formacion registrados.
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

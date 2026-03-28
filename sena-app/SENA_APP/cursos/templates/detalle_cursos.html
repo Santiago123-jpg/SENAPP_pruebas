@@ -1,0 +1,101 @@
+{% extends "master.html" %}
+
+{% block title %}Detalle del Curso - {{ curso.nombre }}{% endblock %}
+
+{% block content %}
+<div class="container-wide py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="back-link">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cursos:lista_cursos' %}" class="back-link">Lista Cursos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ curso.nombre }}</li>
+        </ol>
+    </nav>
+
+    <div class="details-card">
+        <div class="details-card-header">
+            <h2>Detalle del Curso</h2>
+        </div>
+        <div class="details-card-body">
+            <div class="row g-4">
+                <div class="col-md-4 text-center border-end">
+                    <div class="programa-avatar mb-3 mx-auto" style="width:80px; height:80px; border-radius:50%; background:#009846; color:#fff; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">
+                        {{ curso.nombre.0|default:"" }}
+                    </div>
+                    <h4 class="text-primary">{{ curso.nombre }}</h4>
+                    <p class="text-muted small">Código: {{ curso.codigo }}</p>
+                    <div class="mt-2">
+                        <span class="badge-sena">Estado: {{ curso.get_estado_display }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <h5 class="text-secondary mb-3 border-bottom pb-2"><i class="bi bi-info-circle me-2"></i>Detalles</h5>
+                    <div class="row g-3">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="text-muted mb-1 small">Programa</h6>
+                            <p class="mb-0 fw-bold">{{ curso.programa.nombre }}</p>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="text-muted mb-1 small">Instructor Coordinador</h6>
+                            <p class="mb-0 fw-bold">{{ curso.instructor_coordinador.nombre }} {{ curso.instructor_coordinador.apellido }}</p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <h6 class="text-muted mb-1 small">Fecha Inicio</h6>
+                            <p class="mb-0 fw-bold">{{ curso.fecha_inicio|date:"d/m/Y" }}</p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <h6 class="text-muted mb-1 small">Fecha Fin</h6>
+                            <p class="mb-0 fw-bold">{{ curso.fecha_fin|date:"d/m/Y" }}</p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <h6 class="text-muted mb-1 small">Horario</h6>
+                            <p class="mb-0 fw-bold">{{ curso.horario }}</p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <h6 class="text-muted mb-1 small">Aula / Ambiente</h6>
+                            <p class="mb-0 fw-bold">{{ curso.aula }}</p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <h6 class="text-muted mb-1 small">Cupos Máximos</h6>
+                            <p class="mb-0 fw-bold">{{ curso.cupos_maximos }}</p>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6">
+                            <h6 class="text-muted mb-1 small">Cupos Disponibles</h6>
+                            <p class="mb-0 fw-bold">{% if cupos_disponibles is not None %}{{ cupos_disponibles }}{% else %}--{% endif %}</p>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <h6 class="text-muted mb-1 small">Instructores Asignados</h6>
+                            <p class="mb-0 fw-bold">{{ instructores_count }} instructores</p>
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <h6 class="text-muted mb-1 small">Aprendices Inscritos</h6>
+                            <p class="mb-0 fw-bold">{{ aprendices_count }} aprendices</p>
+                        </div>
+
+                        <div class="col-12 mt-3">
+                            <h6 class="text-muted mb-1 small">Observaciones</h6>
+                            <p class="mb-0">{% if curso.observaciones %}{{ curso.observaciones }}{% else %}<em>No hay observaciones.</em>{% endif %}</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="details-card-body">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'cursos:lista_cursos' %}" class="btn-green">Volver a lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
